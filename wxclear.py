@@ -31,7 +31,6 @@ client = AipImageCensor(APP_ID, API_KEY, SECRET_KEY)
 
 
 
-
 """ 你的 APPID AK SK """
 APP_ID2 = '14895115'
 API_KEY2 = 'oxGumTKpYGZfxokP7iPayTKB'
