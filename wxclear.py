@@ -66,15 +66,17 @@ bot = Bot(cache_path=True)
 
 myself = bot.self
 
-group_1 = bot.groups().search('aiaiai')[0]
+#group_1 = bot.groups().search('ai小号测试')[0]
 
-group_2 = bot.groups().search('幼儿园接送巴士🚍')[0]
+#group_2 = bot.groups().search('幼儿园接送巴士🚍')[0]
 
-group_3 = bot.groups().search('13物联网班微信群')[0]
+#group_3 = bot.groups().search('13物联网班微信群')[0]
 
-group_4 = bot.groups().search('韶大花都群')[0]
+#group_4 = bot.groups().search('韶大花都群')[0]
 
-group_free = [group_1,group_2,group_4]
+#group_5 = bot.groups().search('rails365 Pro 学员交流1群')[0]
+
+#group_free = [group_1,group_2,group_4,group_5]
 
 
 @bot.register([Group],except_self=False)
@@ -89,19 +91,8 @@ def remote_up(msg):
 
 @bot.register([Friend],TEXT)
 def reply_my_friend(msg):
-    url = "https://aip.baidubce.com/rest/2.0/antispam/v2/spam"
 
-    querystring = {"access_token":"24.f497c07f1abcb5d5c4f6f32052878972.2592000.1545452794.282335-11685556"}
-
-    payload = {"content": msg.text}
-    headers = {
-        'content-type': "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-        'Content-Type': "application/x-www-form-urlencoded",
-        'cache-control': "no-cache",
-        'Postman-Token': "a7b8ce55-437b-49b3-8a38-fc6e5b7cc020"
-    }
-
-    responsess = requests.post(url, data=payload, headers=headers, params=querystring).json()
+    responsess = client.antiSpam(msg.text)
 
 
     if responsess['result']['spam']!=0:
@@ -126,7 +117,7 @@ def reply_my_friend(msg):
 
 
 
-@bot.register(group_free,TEXT,except_self=False)
+@bot.register([Group],TEXT,except_self=False)
 def auto_reply(msg):
 
     if (msg.member == myself and 'bot shutdown' in msg.text):
@@ -140,21 +131,7 @@ def auto_reply(msg):
         thread.join()
         msg.reply('--言论舆情检测已启动--')
 
-
-    url = "https://aip.baidubce.com/rest/2.0/antispam/v2/spam"
-    querystring = {"access_token":"24.f497c07f1abcb5d5c4f6f32052878972.2592000.1545452794.282335-11685556"}
-    payload = {"content": msg.text}
-    headers = {
-        'content-type': "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-        'Content-Type': "application/x-www-form-urlencoded",
-        'cache-control': "no-cache",
-        'Postman-Token': "a7b8ce55-437b-49b3-8a38-fc6e5b7cc020"
-    }
-
-
-
-
-    responsess = requests.post(url, data=payload, headers=headers, params=querystring).json()
+    responsess = client.antiSpam(msg.text)
 
 
     if responsess['result']['spam']!=0:
@@ -211,7 +188,7 @@ def ai_reply(msg):
 
 
 
-@bot.register(group_free,PICTURE)
+@bot.register([Group],PICTURE)
 def ai_replygg(msg):
 
     image_name = msg.file_name
